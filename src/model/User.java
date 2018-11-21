@@ -19,7 +19,7 @@ public final class User implements Serializable
 	private final byte[] password;
 	/* Reservations corresponding to the user. */
 	private final List<Reservation> reservations = new ArrayList<>();
-
+	
     /**
      * Constructs a user with the specified credentials.
      * Plaintext passwords are not stored with the user.

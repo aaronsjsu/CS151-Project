@@ -1,27 +1,28 @@
 package model;
 
+import java.util.Objects;
+
 /**
  * Models a hotel room for the hotel reservation system. Each room 
  * keeps track of its number and rate. 
  */
 public final class Room
 {
-	/* Number of the room. */
+	/* Room number (sequential). */
 	private final int number;
-	/* Rate at which is charged for the room. */
-	private final int rate;
+	/* Room type classification. */
+	private final Type type;
 
 	/**
 	 * Constructs a room inside the hotel.
 	 * @param number Room number of the hotel.
-	 * @param rate Rate to charge for the room.
+     * @param type Type of room in the hotel.   
 	 */
-	public Room(final int number, final int rate)
+	public Room(final int number, final Type type)
 	{
 		if (number < 0) throw new IllegalArgumentException("Room number must be positive!");
-		if (rate < 0) throw new IllegalArgumentException("Going rate for the room must be positive!");
 		this.number = number;
-		this.rate = rate;
+		this.type = Objects.requireNonNull(type);
 	}
 
 	/**
@@ -32,11 +33,50 @@ public final class Room
 		return number;
 	}
 
-	/**
-	 * @return Rate which is charged for the room.
-	 */
-	public int getRate() 
-	{
-		return rate;
-	}
+    /**
+     * @return Type of the room.
+     */
+	public Type getType()
+    {
+        return type;
+    }
+
+    /**
+     * Defines a classification for the types of rooms within the hotel system.
+     */
+    public enum Type
+    {
+        LUXURIOUS("Luxurious", 300),
+        ECONOMIC("Economic", 100);
+        
+        /* Name of the type of room. */
+        private final String name;
+        /* Going rate of the type of room. */
+        private final int rate;
+
+        /* Constructs a room type with a specified name and going rate. */
+        Type(final String name, final int rate)
+        {
+            assert name != null;
+            assert rate >= 0;
+            this.name = name;
+            this.rate = rate;
+        }
+
+        /**
+         * @return Name of the type of room.
+         */
+        public String getName()
+        {
+            return name;
+        }
+
+        /**
+         * @return Going rate of the type of room.
+         */
+        public int getRate()
+        {
+            return rate;
+        }
+    }
 }

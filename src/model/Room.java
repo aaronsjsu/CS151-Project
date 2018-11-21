@@ -1,3 +1,4 @@
+package model;
 
 /**
  * Models a hotel room for the hotel reservation system. Each room 

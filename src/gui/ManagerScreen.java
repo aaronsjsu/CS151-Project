@@ -16,9 +16,12 @@ public class ManagerScreen extends JFrame {
 	 * @param size The dimension of the screen in pixels.
 	 */
 	public ManagerScreen(int size) {
+		// Reference to be used within anonymous ActionListener classes
+		JFrame frame = this;
+		
 		// Create some fonts
 		Font largeFont = new Font("Serif", Font.PLAIN, size/5);
-		Font smallFont = new Font("SansSerif", Font.PLAIN, size/12);
+		Font smallFont = new Font("SansSerif", Font.PLAIN, size/15);
 		
 		// Create some labels
 		JLabel welcomeLabel = new JLabel("Welcome Manager!");
@@ -30,6 +33,9 @@ public class ManagerScreen extends JFrame {
 		loadButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Load existing reservations from reservations.txt
+				loadButton.setEnabled(false);
+				frame.add(new CalendarComponent(size), BorderLayout.SOUTH);
+				frame.pack();
 			}
 		});
 		loadButton.setPreferredSize(new Dimension(size/2, size/6));
@@ -70,13 +76,13 @@ public class ManagerScreen extends JFrame {
 		
 		// Add our welcome label and panel to the frame
 		this.add(welcomeLabel, BorderLayout.NORTH);
-		this.add(panel, BorderLayout.SOUTH);
+		this.add(panel, BorderLayout.CENTER);
 		
 		// Display the frame
 		this.setTitle("Hotel Reservation System");
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		//this.setSize(3*size/2, 2*size/3);
+		//this.setSize(3*size/2, size);
 		this.pack();
 	}
 }

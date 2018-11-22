@@ -42,6 +42,7 @@ public class InitialScreen extends JFrame {
 		});
 		managerButton.setPreferredSize(new Dimension(size/2, size/6));
 		managerButton.setFont(smallFont);
+		managerButton.setFocusable(false);
 		JButton guestButton = new JButton("Guest");
 		guestButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -52,6 +53,7 @@ public class InitialScreen extends JFrame {
 		});
 		guestButton.setPreferredSize(new Dimension(size/2, size/6));
 		guestButton.setFont(smallFont);
+		guestButton.setFocusable(false);
 	
 		// Add some components to a new panel for the layout
 		JPanel panel = new JPanel();

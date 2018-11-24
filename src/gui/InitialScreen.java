@@ -1,5 +1,7 @@
 package gui;
 
+import model.HotelSystem;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -16,7 +18,7 @@ public class InitialScreen extends JFrame {
 	 * Constructor for the initial screen. All the work is done here.
 	 * @param size The dimension of the screen in pixels.
 	 */
-	public InitialScreen(int size) {
+	public InitialScreen(int size, HotelSystem hs) {
 		// Reference to be used within anonymous ActionListener classes
 		JFrame frame = this;
 		
@@ -37,21 +39,23 @@ public class InitialScreen extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// Close this frame and open the manager menu frame.
 				frame.dispose();
-				new ManagerScreen(size);
+				new ManagerScreen(size, hs);
 			}
 		});
 		managerButton.setPreferredSize(new Dimension(size/2, size/6));
 		managerButton.setFont(smallFont);
+		managerButton.setFocusable(false);
 		JButton guestButton = new JButton("Guest");
 		guestButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Close this frame and open the guest menu frame.
 				frame.dispose();
-				new GuestScreen();
+				new GuestScreen(size, hs);
 			}
 		});
 		guestButton.setPreferredSize(new Dimension(size/2, size/6));
 		guestButton.setFont(smallFont);
+		guestButton.setFocusable(false);
 	
 		// Add some components to a new panel for the layout
 		JPanel panel = new JPanel();

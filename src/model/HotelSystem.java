@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,9 +9,9 @@ import java.util.List;
  */
 public class HotelSystem
 {
-	public List<User> users;
-	public List<Reservation> reservations;
-	public List<Room> rooms;
+	private List<User> users;
+	private List<Reservation> reservations;
+	private List<Room> rooms;
 	
     /** Maximum number of rooms available in the hotel at any given time. */
     public static final int MAXIMUM_VACANCY = 20;
@@ -18,6 +19,26 @@ public class HotelSystem
     public static final int LUXURIOUS_ROOMS = 10;
 	
 	public HotelSystem() {
+	  users = new ArrayList<>();
+	  reservations = new ArrayList<>();
+	  rooms = new ArrayList<>();
 		
 	}
+
+	public void addReservation(Reservation r ) {
+	  reservations.add(r);
+  }
+
+  public void addRoom(Room r) {
+	  rooms.add(r);
+  }
+
+  public void addUser(User u) {
+	  users.add(u);
+  }
+
+  public Boolean isUserIdExisted(String id) {
+	  return this.users.stream().anyMatch(u -> u.getID().equals(id));
+  }
+
 }

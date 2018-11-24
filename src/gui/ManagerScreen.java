@@ -1,5 +1,7 @@
 package gui;
 
+import model.HotelSystem;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -15,7 +17,7 @@ public class ManagerScreen extends JFrame {
 	 * Constructor for the manager screen. All the work is done here.
 	 * @param size The dimension of the screen in pixels.
 	 */
-	public ManagerScreen(int size) {
+	public ManagerScreen(int size, HotelSystem hs) {
 		// Reference to be used within anonymous ActionListener classes
 		JFrame frame = this;
 		

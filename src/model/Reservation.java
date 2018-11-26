@@ -11,11 +11,14 @@ public class Reservation
 {
 	private User user;
 	private Room room;
-	private LocalDate startTime;
-	private LocalDate endTime;
+	private LocalDate startDate;
+	private LocalDate endDate;
 	
-	public Reservation() {
-		
+	public Reservation(User user, Room room, LocalDate startDate, LocalDate endDate) {
+		this.user = user;
+		this.room = room;
+		this.startDate = startDate;
+		this.endDate = endDate;
 	}
 	
 	public User getUser() {
@@ -26,4 +29,11 @@ public class Reservation
 		return room;
 	}
 	
+	public LocalDate getStartDate() {
+		return startDate;
+	}
+	
+	public LocalDate getEndDate() {
+		return endDate;
+	}
 }

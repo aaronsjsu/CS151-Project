@@ -21,6 +21,7 @@ public interface Observable<T>
      * Removes a listener from the observable.
      * After the operation, the listener will no longer be notified.
      * @param listener Listener to remove.
+     * @return true if the listener was successfully removed.
      */
-    void removeListener(ChangeListener<T> listener);
+    boolean removeListener(ChangeListener<T> listener);
 }

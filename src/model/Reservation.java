@@ -13,6 +13,11 @@ public class Reservation
 	private Room room;
 	private LocalDate startDate;
 	private LocalDate endDate;
+
+    /**
+     * The maximum amount of days a reservation can last for.
+     */
+	public static final int MAXIMUM_DURATION_DAYS = 60;
 	
 	public Reservation(User user, Room room, LocalDate startDate, LocalDate endDate) {
 		this.user = user;

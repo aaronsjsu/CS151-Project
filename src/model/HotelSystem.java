@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -9,7 +10,7 @@ import java.util.List;
  */
 public class HotelSystem
 {
-	private List<User> users;
+	private HashMap<String, User> users;
 	private List<Reservation> reservations;
 	private List<Room> rooms;
 	
@@ -19,7 +20,7 @@ public class HotelSystem
     public static final int LUXURIOUS_ROOMS = 10;
 	
 	public HotelSystem() {
-	  users = new ArrayList<>();
+	  users = new HashMap<>();
 	  reservations = new ArrayList<>();
 	  rooms = new ArrayList<>();
 		
@@ -33,12 +34,18 @@ public class HotelSystem
 	  rooms.add(r);
   }
 
-  public void addUser(User u) {
-	  users.add(u);
+  public void addUser(String id,String userName, String password) {
+		User newUser = new User(id, userName, password);
+	  users.put(newUser.getID(), newUser);
   }
 
   public Boolean isUserIdExisted(String id) {
-	  return this.users.stream().anyMatch(u -> u.getID().equals(id));
+	  return this.users.containsKey(id);
   }
+  public User getUser(String id, String password) {
+		return (!isUserIdExisted(id) || !users.get(id).validatePassword(password)) ? null : users.get(id);
+
+
+	}
 
 }

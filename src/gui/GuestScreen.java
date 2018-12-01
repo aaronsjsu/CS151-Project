@@ -26,7 +26,7 @@ public class GuestScreen extends JFrame {
     LoginBtn.setPreferredSize(new Dimension(size/2, size/6));
     LoginBtn.addActionListener(e -> {
       dispose();
-      new GuestLoginScreen();
+      new GuestLoginScreen(size, hs);
     });
 
     JButton SignupBtn = new JButton("Sign Up");

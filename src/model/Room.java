@@ -24,6 +24,11 @@ public final class Room
 		this.number = number;
 		this.type = Objects.requireNonNull(type);
 	}
+	
+	@Override
+	public String toString() {
+		return "Room " + number + ", " + type;
+	}
 
 	/**
 	 * @return Number of the room.

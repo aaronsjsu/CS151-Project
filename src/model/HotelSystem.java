@@ -20,32 +20,38 @@ public class HotelSystem
     public static final int LUXURIOUS_ROOMS = 10;
 	
 	public HotelSystem() {
-	  users = new HashMap<>();
-	  reservations = new ArrayList<>();
-	  rooms = new ArrayList<>();
+		users = new HashMap<>();
+		reservations = new ArrayList<>();
+		rooms = new ArrayList<>();
 		
 	}
 
 	public void addReservation(Reservation r ) {
-	  reservations.add(r);
-  }
-
-  public void addRoom(Room r) {
-	  rooms.add(r);
-  }
-
-  public void addUser(String id,String userName, String password) {
-		User newUser = new User(id, userName, password);
-	  users.put(newUser.getID(), newUser);
-  }
-
-  public Boolean isUserIdExisted(String id) {
-	  return this.users.containsKey(id);
-  }
-  public User getUser(String id, String password) {
-		return (!isUserIdExisted(id) || !users.get(id).validatePassword(password)) ? null : users.get(id);
-
-
+		reservations.add(r);
 	}
 
+	public void addRoom(Room r) {
+		rooms.add(r);
+	}
+
+	public void addUser(String id,String userName, String password) {
+		User newUser = new User(id, userName, password);
+		users.put(newUser.getID(), newUser);
+	}
+
+	public Boolean isUserIdExisted(String id) {
+		return this.users.containsKey(id);
+	}
+	
+	public User getUser(String id, String password) {
+		return (!isUserIdExisted(id) || !users.get(id).validatePassword(password)) ? null : users.get(id);
+	}
+
+	public List<Room> getRooms() {
+		return rooms;
+	}
+	
+	public List<Reservation> getReservations() {
+		return reservations;
+	}
 }

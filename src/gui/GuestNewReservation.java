@@ -1,19 +1,26 @@
 package gui;
 
+import javafx.embed.swing.JFXPanel;
+import javafx.geometry.HPos;
+import javafx.scene.Scene;
+import javafx.scene.control.DateCell;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 import model.HotelSystem;
 import model.User;
 
 import javax.swing.*;
-
 import java.awt.*;
-
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Date;
 
-public class GuestNewReservation extends JFrame{
+public class GuestNewReservation extends JFrame {
   static SimpleDateFormat fmt = new SimpleDateFormat("dd-MMM-yyyy");
+  private DatePicker checkInDatePicker;
+  private DatePicker checkOutDatePicker;
 
   public GuestNewReservation(int size, HotelSystem hs, User user) {
     this.setTitle("Sign Up");
@@ -28,34 +35,93 @@ public class GuestNewReservation extends JFrame{
     group.add(ckbox2);
     checkBoxPanel.add(ckbox1);
     checkBoxPanel.add(ckbox2);
-    this.add(checkBoxPanel, BorderLayout.CENTER);
+    this.add(checkBoxPanel, BorderLayout.NORTH);
+    JButton searchBtn = new JButton("View available Room");
 
+    JFXPanel centerPane = new JFXPanel();
+    checkInDatePicker = new DatePicker();
+    checkOutDatePicker = new DatePicker();
+    checkInDatePicker.setValue(LocalDate.now());
+    final Callback<DatePicker, DateCell> dayCellFactory2 =
+        new Callback<DatePicker, DateCell>() {
+          @Override
+          public DateCell call(final DatePicker datePicker) {
+            return new DateCell() {
+              @Override
+              public void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+                if (checkOutDatePicker.getValue().isBefore(checkInDatePicker.getValue())
+                        || checkOutDatePicker
+                        .getValue()
+                        .isAfter(checkInDatePicker.getValue().plusDays(60))) {
+                  checkOutDatePicker.setValue(checkInDatePicker.getValue().plusDays(1));
+                }
+                if (item.isBefore(LocalDate.now())) {
+                  setDisable(true);
+                  setStyle("-fx-background-color: #ffc0cb;");
+                }
+              }
+            };
+          }
+        };
+    checkInDatePicker.setDayCellFactory(dayCellFactory2);
+    checkOutDatePicker.setValue(checkInDatePicker.getValue().plusDays(1));
+    final Callback<DatePicker, DateCell> dayCellFactory =
+        new Callback<DatePicker, DateCell>() {
+          @Override
+          public DateCell call(final DatePicker datePicker) {
+            return new DateCell() {
+              @Override
+              public void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
 
-    Date initDate = java.sql.Date.valueOf(LocalDate.now());
-    Date maxDate = java.sql.Date.valueOf(LocalDate.now().plusMonths(2));
-    SpinnerModel model =
-            new SpinnerDateModel(initDate, initDate, null, Calendar.DAY_OF_MONTH);
-    SpinnerModel model2 =
-            new SpinnerDateModel(initDate, initDate, maxDate, Calendar.DAY_OF_MONTH);
-    JSpinner spinner = new JSpinner(model);
-    JSpinner endDate = new JSpinner(model2);
-    JSpinner.DateEditor editor = new JSpinner.DateEditor(spinner, "yyyy/MM/dd");
-    JSpinner.DateEditor editor2 = new JSpinner.DateEditor(endDate, "yyyy/MM/dd");
-    spinner.setEditor(editor);
-    spinner.setBounds(100,110,200,30);
-    endDate.setEditor(editor2);
-    add(spinner);
-    add(endDate);
+                if (item.isBefore(checkInDatePicker.getValue().plusDays(1))
+                    || item.isAfter(checkInDatePicker.getValue().plusMonths(2))) {
+                  setDisable(true);
+                  setStyle("-fx-background-color: #ffc0cb;");
+                }
+              }
+            };
+          }
+        };
 
+    checkOutDatePicker.setDayCellFactory(dayCellFactory);
+    VBox vbox = new VBox(20);
+    vbox.setStyle("-fx-padding: 10;");
 
-    this.add(spinner);
-    this.pack();
-    this.setResizable(false);
+    GridPane gridPane = new GridPane();
+    gridPane.setHgap(10);
+    gridPane.setVgap(10);
+    Label checkInlabel = new Label("Check-In Date:");
+    gridPane.add(checkInlabel, 0, 0);
+    GridPane.setHalignment(checkInlabel, HPos.LEFT);
+    gridPane.add(checkInDatePicker, 0, 1);
+    Label checkOutlabel = new Label("Check-Out Date:");
+    gridPane.add(checkOutlabel, 0, 2);
+    GridPane.setHalignment(checkOutlabel, HPos.LEFT);
+    gridPane.add(checkOutDatePicker, 0, 3);
+    vbox.getChildren().add(gridPane);
+
+    Scene scene = new Scene(vbox, 400, 400);
+    centerPane.setScene(scene);
+
+    searchBtn.addActionListener(
+        e -> {
+          String roomType = ckbox1.isSelected() ? ckbox1.getText() : ckbox2.getText();
+          LocalDate start = checkInDatePicker.getValue();
+          System.out.println(start.toString());
+          // limit the period of stay
+          if (1 == 1) {
+          } else {
+            JOptionPane.showMessageDialog(null, "Please fill out all fields ");
+          }
+        });
+
+    this.add(centerPane);
+    this.add(searchBtn, BorderLayout.SOUTH);
+    this.setResizable(true);
     this.setVisible(true);
-
+    this.pack();
+    this.setSize(400, 300);
   }
-
-
-
 }
-

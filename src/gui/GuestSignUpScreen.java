@@ -44,8 +44,10 @@ public class GuestSignUpScreen extends JFrame {
           if (!id.isEmpty() && !userName.isEmpty() && !password.isEmpty()) {
 
             if (!hs.isUserIdExisted(id)) {
-              hs.addUser(id,userName,password);
+              User newUser = new User(id, userName, password);
+              hs.addUser(newUser);
               dispose();
+              new GuestMenuScreen(size, hs, newUser);
             } else {
               JOptionPane.showMessageDialog(
                   null, "Id is invalid, please use different Id");

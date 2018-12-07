@@ -34,9 +34,8 @@ public class HotelSystem
 	  rooms.add(r);
   }
 
-  public void addUser(String id,String userName, String password) {
-		User newUser = new User(id, userName, password);
-	  users.put(newUser.getID(), newUser);
+  public void addUser(User user) {
+	  users.put(user.getID(), user);
   }
 
   public Boolean isUserIdExisted(String id) {

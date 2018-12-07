@@ -46,7 +46,7 @@ public class GuestSignUpScreen extends JFrame {
             if (!hs.isUserIdExisted(id)) {
               User newUser = new User(id, userName, password);
               hs.addUser(newUser);
-              dispose();
+              this.dispose();
               new GuestMenuScreen(size, hs, newUser);
             } else {
               JOptionPane.showMessageDialog(

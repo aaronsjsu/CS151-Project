@@ -20,6 +20,7 @@ public class ManagerScreen extends JFrame {
 	public ManagerScreen(int size, HotelSystem hs) {
 		// Reference to be used within anonymous ActionListener classes
 		JFrame frame = this;
+		JPanel dataPanel = new JPanel();
 		
 		// Create some fonts
 		Font largeFont = new Font("Serif", Font.PLAIN, size/5);
@@ -36,20 +37,25 @@ public class ManagerScreen extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Load existing reservations from reservations.txt
 				loadButton.setEnabled(false);
-				frame.add(new CalendarComponent(size), BorderLayout.SOUTH);
-				frame.pack();
 			}
 		});
 		loadButton.setPreferredSize(new Dimension(size/2, size/6));
 		loadButton.setFont(smallFont);
+		loadButton.setFocusable(false);
 		JButton viewButton = new JButton("View Information");
 		viewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Displays room information
+				//dataPanel.add(new CalendarComponent(size, hs), BorderLayout.NORTH);
+				dataPanel.add(new RoomInformationComponent(size, hs), BorderLayout.EAST);
+				//dataPanel.add(new SelectRoomComponent(size, hs), BorderLayout.CENTER);
+				frame.pack();
+				viewButton.setEnabled(false);
 			}
 		});
 		viewButton.setPreferredSize(new Dimension(size/2, size/6));
 		viewButton.setFont(smallFont);
+		viewButton.setFocusable(false);
 		JButton saveButton = new JButton("Save Reservations");
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -58,14 +64,17 @@ public class ManagerScreen extends JFrame {
 		});
 		saveButton.setPreferredSize(new Dimension(size/2, size/6));
 		saveButton.setFont(smallFont);
+		saveButton.setFocusable(false);
 		JButton quitButton = new JButton("Quit");
 		quitButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// TODO System saves and quits
+				frame.dispose();
 			}
 		});
 		quitButton.setPreferredSize(new Dimension(size/2, size/6));
 		quitButton.setFont(smallFont);
+		quitButton.setFocusable(false);
 		
 	
 		// Add some components to a new panel for the layout
@@ -79,6 +88,7 @@ public class ManagerScreen extends JFrame {
 		// Add our welcome label and panel to the frame
 		this.add(welcomeLabel, BorderLayout.NORTH);
 		this.add(panel, BorderLayout.CENTER);
+		this.add(dataPanel, BorderLayout.SOUTH);
 		
 		// Display the frame
 		this.setTitle("Hotel Reservation System");

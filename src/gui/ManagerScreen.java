@@ -46,10 +46,12 @@ public class ManagerScreen extends JFrame {
 		viewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Displays room information
-				// Why don't these fit?
-				dataPanel.add(new CalendarComponent(size, hs), BorderLayout.NORTH);
+				JPanel innerPanel = new JPanel();
+				innerPanel.setLayout(new GridLayout(2, 1, size/10, size/10));
+				innerPanel.add(new CalendarComponent(size, hs));
+				innerPanel.add(new SelectRoomComponent(size, hs));
+				dataPanel.add(innerPanel, BorderLayout.WEST);
 				dataPanel.add(new RoomInformationComponent(size, hs), BorderLayout.EAST);
-				dataPanel.add(new SelectRoomComponent(size, hs), BorderLayout.CENTER);
 				frame.pack();
 				viewButton.setEnabled(false);
 			}

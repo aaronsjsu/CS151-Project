@@ -39,8 +39,7 @@ public class SelectRoomComponent extends JComponent {
 				public void actionPerformed(ActionEvent e) {
 					//hs.setSelectedRoom(r);
 					//hs.updateListeners();
-					//System.out.println(r);
-					//hs.updateListeners();
+					System.out.println(r);
 				}
 			});
 			button.setFont(font);

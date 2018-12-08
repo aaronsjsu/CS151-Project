@@ -19,6 +19,7 @@ public class RoomInformationComponent extends JComponent implements ChangeListen
 	JLabel availableLabel;
 	JLabel reservedLabel;
 	JLabel roomData;
+	JPanel roomDataPanel;
 	HotelSystem hs;
 
 	public RoomInformationComponent(int size, HotelSystem hs) {
@@ -37,8 +38,8 @@ public class RoomInformationComponent extends JComponent implements ChangeListen
 		roomData = new JLabel("No Room Selected");
 		roomData.setFont(font);
 		
-		JPanel roomDataPanel = new JPanel();
-		roomDataPanel.setLayout(new BorderLayout());
+		roomDataPanel = new JPanel();
+		roomDataPanel.setLayout(new FlowLayout());
 		roomDataPanel.add(availableLabel, BorderLayout.NORTH);
 		roomDataPanel.add(reservedLabel, BorderLayout.CENTER);
 		JPanel selectedRoomPanel = new JPanel();
@@ -50,17 +51,21 @@ public class RoomInformationComponent extends JComponent implements ChangeListen
 		this.add(roomDataPanel, BorderLayout.CENTER);
 		this.add(selectedRoomPanel, BorderLayout.SOUTH);
 		this.setVisible(true);
+		System.out.println(size);
+		this.setPreferredSize(new Dimension(size/2, size));
 		this.fire();
 	}
 	
 	private void setRooms(List<Room> availableRooms, List<Room> reservedRooms) {
 		String available = "Available Rooms:\n";
+		//roomDataPanel.add(new JLabel(available));
 		for (Room room : availableRooms) {
 			available += room + "\n";
+			//roomDataPanel.add(new JLabel(room.toString()));
 		}
 		String reserved = "Reserved Rooms:\n";
 		for (Room room : reservedRooms) {
-			reserved += room + "\n";
+			//reserved += room + "\n";
 		}
 		availableLabel.setText(available);
 		reservedLabel.setText(reserved);

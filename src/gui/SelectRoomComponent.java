@@ -27,17 +27,19 @@ public class SelectRoomComponent extends JComponent {
 		title.setFont(largeFont);
 		
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout(new GridLayout(4, 5, 0, 0));
+		buttonPanel.setLayout(new GridLayout(5, 4, 0, 0));
 		buttonPanel.setVisible(true);
 		
 		List<Room> rooms = hs.getRooms();
-		for (Room r : rooms) {
+		for (int i = 1; i <= rooms.size(); i++) {
+			Room r = rooms.get(i - 1);
 			JButton button = new JButton();
-			button.setText(r.toString());
+			button.setText("" + i);
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					hs.setSelectedRoom(r);
 					hs.updateListeners();
+					System.out.println(r);
 				}
 			});
 			button.setFont(font);

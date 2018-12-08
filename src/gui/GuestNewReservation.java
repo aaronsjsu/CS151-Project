@@ -109,12 +109,10 @@ public class GuestNewReservation extends JFrame {
         e -> {
           String roomType = ckbox1.isSelected() ? ckbox1.getText() : ckbox2.getText();
           LocalDate start = checkInDatePicker.getValue();
-          System.out.println(start.toString());
-          // limit the period of stay
-          if (1 == 1) {
-          } else {
-            JOptionPane.showMessageDialog(null, "Please fill out all fields ");
-          }
+          LocalDate end = checkOutDatePicker.getValue();
+
+          hs.setAvailableRooms(roomType, start, end);
+          new GuestFindAvailableRoomScreen(size, hs,  user, roomType, start, end);
         });
 
     this.add(centerPane);

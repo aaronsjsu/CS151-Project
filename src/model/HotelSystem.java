@@ -4,20 +4,22 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import model.observable.*;
+import java.util.stream.Collectors;
+
+import javax.swing.event.*;
 
 /**
  * Models the system itself for the hotel reservation system. This keeps track of 
  * all users, reservations, rooms, etc.
  */
-public class HotelSystem implements Observable<HotelSystem> {
+public class HotelSystem {
 	private HashMap<String, User> users;
 	private List<Reservation> reservations;
 	private List<Room> rooms;
 	private List<ChangeListener> listeners;
 	private LocalDate selectedDate;
 	private Room selectedRoom;
-	
+	private String[] availableRooms;
     /** Maximum number of rooms available in the hotel at any given time. */
     public static final int MAXIMUM_VACANCY = 20;
     /** Number of luxurious rooms available in the hotel. */
@@ -29,6 +31,7 @@ public class HotelSystem implements Observable<HotelSystem> {
 		rooms = new ArrayList<>();
 		listeners = new ArrayList<>();
 		selectedDate = LocalDate.now();
+		availableRooms = new String[MAXIMUM_VACANCY];
 	}
 
 	public void addReservation(Reservation r ) {
@@ -75,19 +78,45 @@ public class HotelSystem implements Observable<HotelSystem> {
 		return selectedRoom;
 	}
 
-	@Override
-	public void addListener(ChangeListener listener) {
+//	@Override
+//	public void addListener(ChangeListener listener) {
+//		listeners.add(listener);
+//	}
+//
+//	@Override
+//	public boolean removeListener(ChangeListener listener) {
+//		return listeners.remove(listener);
+//	}
+//
+//	public void updateListeners() {
+//		for (ChangeListener l : listeners) {
+//			l.fire();
+//		}
+//	}
+
+	// Kevin I want you add find available rooms method here.
+	public void setAvailableRooms(String roomType, LocalDate start, LocalDate end) {
+
+		this.availableRooms[0] = "12141";
+		if(roomType != "Economic") this.availableRooms[1] = "1111";
+		else this.availableRooms[0] = "22222";
+		ChangeEvent event = new ChangeEvent(this);
+		for (ChangeListener listener : listeners)
+			listener.stateChanged(event);
+	}
+
+	public void addChangeListener(ChangeListener listener)
+	{
 		listeners.add(listener);
 	}
 
-	@Override
-	public boolean removeListener(ChangeListener listener) {
-		return listeners.remove(listener);
+
+
+	public String[] getAvailableRooms() {
+		return availableRooms;
 	}
-	
-	public void updateListeners() {
-		for (ChangeListener l : listeners) {
-			l.fire();
-		}
+
+	public void setAvailableRooms(String[] availableRooms) {
+		this.availableRooms = availableRooms;
 	}
 }

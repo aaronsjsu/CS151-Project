@@ -6,9 +6,9 @@ import java.util.Objects;
  * Models a hotel room for the hotel reservation system. Each room 
  * keeps track of its number and rate. 
  */
-public final class Room
+public class Room
 {
-	/* Room number (sequential). */
+	/* Room number. */
 	private final int number;
 	/* Room type classification. */
 	private final Type type;

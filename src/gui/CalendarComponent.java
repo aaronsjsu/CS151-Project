@@ -2,6 +2,9 @@ package gui;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
+import model.HotelSystem;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.time.*;
@@ -20,7 +23,7 @@ public class CalendarComponent extends JComponent {
 	 * Constructor does most the work.
 	 * @param size Used to properly scale the component in pixels.
 	 */
-	public CalendarComponent(int size) {
+	public CalendarComponent(int size, HotelSystem hs) {
 		Font font = new Font("Serif", Font.PLAIN, size/20);
 		
 		// Default calendar to current month
@@ -95,6 +98,9 @@ public class CalendarComponent extends JComponent {
 				int column = table.getSelectedColumn();
 				Object cellValue = table.getValueAt(row, column);
 				if (cellValue != null && cellValue instanceof Integer) {
+					LocalDate selectedDate = LocalDate.of(currentDate.getYear(), currentDate.getMonth(), (int)cellValue);
+					hs.setSelectedDate(selectedDate);
+//					hs.updateListeners();
 					System.out.println(cellValue);
 					// TODO Display reservations on the specified date
 				}

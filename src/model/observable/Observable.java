@@ -15,7 +15,7 @@ public interface Observable<T>
      * Adds a listener to listen for changes from the observable.
      * @param listener Listener to be notified of changes.
      */
-    void addListener(ChangeListener<T> listener);
+    void addListener(ChangeListener listener);
 
     /**
      * Removes a listener from the observable.
@@ -23,5 +23,5 @@ public interface Observable<T>
      * @param listener Listener to remove.
      * @return true if the listener was successfully removed.
      */
-    boolean removeListener(ChangeListener<T> listener);
+    boolean removeListener(ChangeListener listener);
 }

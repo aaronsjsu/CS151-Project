@@ -1,6 +1,4 @@
-package model;
-
-import model.contracts.ReceiptFormatter;
+package model.receipt;
 
 public class ReceiptFactory {
   public ReceiptFormatter createReceipt(String type) {

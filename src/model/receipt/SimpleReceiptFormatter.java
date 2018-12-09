@@ -1,6 +1,7 @@
-package model;
+package model.receipt;
 
-import model.contracts.ReceiptFormatter;
+import model.Reservation;
+import model.User;
 
 import java.util.List;
 

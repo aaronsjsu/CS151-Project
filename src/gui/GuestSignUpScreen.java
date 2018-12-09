@@ -6,6 +6,10 @@ import model.User;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Gui for guest to sign up.
+ * @author Ryongji Park
+ */
 public class GuestSignUpScreen extends JFrame {
   public GuestSignUpScreen(int size, HotelSystem hs) {
     this.setTitle("Sign Up");

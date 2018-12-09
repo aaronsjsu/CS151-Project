@@ -17,6 +17,10 @@ import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 
+/**
+ * Gui for guest to choose a roomtype and dates to make a new reservation.
+ * @author Ryongji Park
+ */
 public class GuestNewReservation extends JFrame {
   static SimpleDateFormat fmt = new SimpleDateFormat("dd-MMM-yyyy");
   private DatePicker checkInDatePicker;

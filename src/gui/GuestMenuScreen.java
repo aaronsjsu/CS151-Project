@@ -5,7 +5,10 @@ import model.User;
 
 import javax.swing.*;
 import java.awt.*;
-
+/**
+ * Gui for guest to choose a menu.
+ * @author Ryongji Park
+ */
 public class GuestMenuScreen extends JFrame {
   public GuestMenuScreen(int size, HotelSystem hs, User user) {
     this.setTitle("Guest Screen");

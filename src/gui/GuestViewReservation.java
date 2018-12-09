@@ -10,6 +10,10 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Gui for guest to view and cancel the reservation.
+ * @author Ryongji Park
+ */
 public class GuestViewReservation extends JFrame {
   public GuestViewReservation(int size, HotelSystem hs, User user) {
     JScrollPane sp = new JScrollPane();
@@ -42,6 +46,11 @@ public class GuestViewReservation extends JFrame {
 
   }
 
+  /**
+   * get String[] to add this on GUI to show the reservation.
+   * @param user
+   * @return String[]
+   */
   public String[] getReservationList(User user) {
     List<Reservation> user_reservations = user.getReservations();
 

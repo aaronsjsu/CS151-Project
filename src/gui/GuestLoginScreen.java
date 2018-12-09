@@ -5,7 +5,10 @@ import model.User;
 
 import javax.swing.*;
 import java.awt.*;
-
+/**
+ * Gui for guest to login.
+ * @author Ryongji Park
+ */
 public class GuestLoginScreen extends JFrame {
   public GuestLoginScreen(int size, HotelSystem hs) {
     this.setTitle("Login");

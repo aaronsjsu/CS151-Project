@@ -8,6 +8,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Gui for guest to choose a type of receipt.
+ * @author Ryongji Park
+ */
 public class ChooseReceiptScreen extends JFrame {
   public ChooseReceiptScreen(int size, HotelSystem hs, User user) {
 

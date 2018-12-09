@@ -22,6 +22,10 @@ import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.util.Optional;
 
+/**
+ * Gui for guest to choose a available room and confirm the reservation.
+ * @author Ryongji Park
+ */
 public class GuestFindAvailableRoomScreen extends JFrame {
   private DatePicker checkInDatePicker;
   private DatePicker checkOutDatePicker;

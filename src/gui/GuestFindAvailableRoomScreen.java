@@ -9,10 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
-import model.HotelSystem;
-import model.Reservation;
-import model.Room;
-import model.User;
+import model.*;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -39,10 +36,11 @@ public class GuestFindAvailableRoomScreen extends JFrame {
     ActionListener actionListener = new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
+        TimeInterval timeInterval = new TimeInterval(checkInDatePicker.getValue().atStartOfDay(), checkOutDatePicker.getValue().atStartOfDay());
         if (e.getActionCommand().equals("Economic")) {
-          hs.setAvailableRooms("Economic", checkInDatePicker.getValue(), checkOutDatePicker.getValue());
+          hs.setAvailableRooms(Room.Type.ECONOMIC, timeInterval);
         } else if (e.getActionCommand().equals("Luxurious")) {
-          hs.setAvailableRooms("Luxurious", checkInDatePicker.getValue(), checkOutDatePicker.getValue());
+          hs.setAvailableRooms(Room.Type.LUXURIOUS, timeInterval);
         }
       }
     };
@@ -80,7 +78,9 @@ public class GuestFindAvailableRoomScreen extends JFrame {
                       setDisable(true);
                       setStyle("-fx-background-color: #ffc0cb;");
                     }
-                    hs.setAvailableRooms(roomType, checkInDatePicker.getValue(), checkOutDatePicker.getValue());
+                    TimeInterval timeInterval = new TimeInterval(checkInDatePicker.getValue().atStartOfDay(), checkOutDatePicker.getValue().atStartOfDay());
+                    if (roomType.equals("Economic")) hs.setAvailableRooms(Room.Type.ECONOMIC,timeInterval);
+                    else hs.setAvailableRooms(Room.Type.LUXURIOUS,timeInterval);
                   }
                 };
               }
@@ -100,7 +100,9 @@ public class GuestFindAvailableRoomScreen extends JFrame {
                       setDisable(true);
                       setStyle("-fx-background-color: #ffc0cb;");
                     }
-                    hs.setAvailableRooms(roomType, checkInDatePicker.getValue(), checkOutDatePicker.getValue());
+                    TimeInterval timeInterval = new TimeInterval(checkInDatePicker.getValue().atStartOfDay(), checkOutDatePicker.getValue().atStartOfDay());
+                    if (roomType.equals("Economic")) hs.setAvailableRooms(Room.Type.ECONOMIC,timeInterval);
+                    else hs.setAvailableRooms(Room.Type.LUXURIOUS,timeInterval);
                   }
                 };
               }
@@ -129,7 +131,7 @@ public class GuestFindAvailableRoomScreen extends JFrame {
 
     JScrollPane sp = new JScrollPane();
 
-    hs.addChangeListener((ChangeEvent event) -> {
+    hs.addListener((ChangeEvent event) -> {
       sp.getViewport().setView(new JList(hs.getAvailableRooms()));
     });
 
@@ -145,7 +147,7 @@ public class GuestFindAvailableRoomScreen extends JFrame {
     JButton DoneBtn = new JButton("Done");
 
     confirmBtn.addActionListener(e -> {
-      Optional room = hs.getRooms().stream().filter(r -> String.valueOf(r.getNumber()).equals(room_number.getText())).findFirst();
+      Optional room = hs.roomTypeVacancies.stream().filter(r -> String.valueOf(r.getNumber()).equals(room_number.getText())).findFirst();
       if (room.isPresent()) {
         user.addReservation(new Reservation(user, (Room) room.get(), checkInDatePicker.getValue(), checkOutDatePicker.getValue()));
         confirmBtn.setText("confirmed");

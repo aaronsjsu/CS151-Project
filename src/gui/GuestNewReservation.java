@@ -10,6 +10,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import model.HotelSystem;
+import model.Room;
+import model.TimeInterval;
 import model.User;
 
 import javax.swing.*;
@@ -114,8 +116,9 @@ public class GuestNewReservation extends JFrame {
           String roomType = ckbox1.isSelected() ? ckbox1.getText() : ckbox2.getText();
           LocalDate start = checkInDatePicker.getValue();
           LocalDate end = checkOutDatePicker.getValue();
-
-          hs.setAvailableRooms(roomType, start, end);
+          TimeInterval timeInterval = new TimeInterval(start.atStartOfDay(), end.atStartOfDay());
+          if (roomType.equals("Economic")) hs.setAvailableRooms(Room.Type.ECONOMIC,timeInterval);
+          else hs.setAvailableRooms(Room.Type.LUXURIOUS,timeInterval);
           new GuestFindAvailableRoomScreen(size, hs,  user, roomType, start, end);
           dispose();
         });

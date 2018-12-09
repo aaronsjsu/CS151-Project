@@ -6,24 +6,29 @@ import javax.swing.*;
 import model.HotelSystem;
 import model.Reservation;
 import model.Room;
-import model.observable.ChangeListener;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.util.List;
 import java.util.ArrayList;
 
 /**
- * Component to view hotel room information.
+ * Component to view hotel room information. Automatically updated
+ * as a ChangeListener. 
  * @author Aaron Smith
- * @version 1.0 12/5/18 
+ * @version 1.0 12/8/18 
  */
 public class RoomInformationComponent extends JComponent implements ChangeListener {
-	//JLabel availableLabel;
-	//JLabel reservedLabel;
 	JLabel roomData;
 	JPanel roomDataPanel;
 	HotelSystem hs;
 	Font font;
 	Font boldFont;
 
+	/**
+	 * Constructor for our component. This will do most of the work.
+	 * @param size Size of the component specified in pixels.
+	 * @param hs Access to HotelSystem object.
+	 */
 	public RoomInformationComponent(int size, HotelSystem hs) {
 		this.hs = hs;
 		Font largeFont = new Font("Serif", Font.BOLD, size/15);
@@ -32,10 +37,6 @@ public class RoomInformationComponent extends JComponent implements ChangeListen
 		
 		JLabel title = new JLabel("Room Information");
 		title.setFont(largeFont);
-		//availableLabel = new JLabel();
-		//availableLabel.setFont(font);
-		//reservedLabel = new JLabel();
-		//reservedLabel.setFont(font);
 		JLabel selectedRoom = new JLabel("Selected Room:");
 		selectedRoom.setFont(font);
 		roomData = new JLabel("No Room Selected");
@@ -43,8 +44,6 @@ public class RoomInformationComponent extends JComponent implements ChangeListen
 		
 		roomDataPanel = new JPanel();
 		roomDataPanel.setLayout(new GridLayout(23, 1, 1, 1));
-		//roomDataPanel.add(availableLabel, BorderLayout.NORTH);
-		//roomDataPanel.add(reservedLabel, BorderLayout.CENTER);
 		JPanel selectedRoomPanel = new JPanel();
 		selectedRoomPanel.setLayout(new BorderLayout());
 		selectedRoomPanel.add(selectedRoom, BorderLayout.NORTH);
@@ -54,26 +53,25 @@ public class RoomInformationComponent extends JComponent implements ChangeListen
 		this.add(roomDataPanel, BorderLayout.CENTER);
 		this.add(selectedRoomPanel, BorderLayout.SOUTH);
 		this.setVisible(true);
-		System.out.println(size);
-		//this.setPreferredSize(new Dimension(size, size));
-		this.fire();
+		this.update();
 	}
 	
+	/**
+	 * Sets the rooms that are to be displayed.
+	 * @param availableRooms The rooms that are available on the selected date.
+	 * @param reservedRooms The rooms that are reserved on the selected date.
+	 */
 	private void setRooms(List<Room> availableRooms, List<Room> reservedRooms) {
-		//String available = "Available Rooms:\n";
 		roomDataPanel.removeAll();
 		JLabel l = new JLabel("Available Rooms (date):");
 		l.setFont(boldFont);
 		roomDataPanel.add(l);
 		for (Room room : availableRooms) {
-			//available += room + "\n";
 			JLabel label = new JLabel(room.toString());
 			label.setFont(font);
 			roomDataPanel.add(label);
 		}
-		//String reserved = "Reserved Rooms:\n";
 		for (Room room : reservedRooms) {
-			//reserved += room + "\n";
 			JLabel label = new JLabel(room.toString());
 			label.setFont(font);
 			roomDataPanel.add(label);
@@ -81,11 +79,12 @@ public class RoomInformationComponent extends JComponent implements ChangeListen
 		l = new JLabel("Reserved Rooms (date):");
 		l.setFont(boldFont);
 		roomDataPanel.add(l);
-		//availableLabel.setText(available);
-		//reservedLabel.setText(reserved);
 	}
-
-	@Override public void fire() {
+	
+	/**
+	 * Updates the component to display the latest information.
+	 */
+	private void update() {
 		LocalDate selectedDate = hs.getSelectedDate();
 		List<Reservation> reservations = hs.getReservations();
 		List<Room> reservedRooms = new ArrayList<>();
@@ -100,10 +99,19 @@ public class RoomInformationComponent extends JComponent implements ChangeListen
 		Room selectedRoom = hs.getSelectedRoom();
 		if (selectedRoom != null) {
 			roomData.setText(selectedRoom.toString());
-			// also need to display reservation information
 			//information of the selected room including room number, price 
 			//and periods of valid reservations of this room (e.g. 11/28/18-
 			//11/30/18, 12/25/18-12/26/18).
 		}
 	}
+
+	
+	/**
+	 * Overrides method from ChangeListener interface. Calls update() method.
+	 */
+	@Override
+	public void stateChanged(ChangeEvent e) {
+		this.update();
+	}
+
 }

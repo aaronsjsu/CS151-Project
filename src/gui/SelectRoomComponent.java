@@ -20,6 +20,12 @@ import model.Room;
  */
 public class SelectRoomComponent extends JComponent {
 
+	/**
+	 * Constructor for the component. All the work is done in here,
+	 * i.e. buttons are added, layout is created, etc.
+	 * @param size The size for the component in pixels. Used to scale it.
+	 * @param hs HotelSysem object used to access hotel data. 
+	 */
 	public SelectRoomComponent(int size, HotelSystem hs) {
 		Font largeFont = new Font("Serif", Font.PLAIN, size/15);
 		Font font = new Font("Serif", Font.PLAIN, size/20);
@@ -37,7 +43,7 @@ public class SelectRoomComponent extends JComponent {
 			button.setText("" + i);
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					//hs.setSelectedRoom(r);
+					hs.setSelectedRoom(r);
 					//hs.updateListeners();
 					System.out.println(r);
 				}

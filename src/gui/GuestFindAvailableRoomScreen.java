@@ -10,6 +10,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import model.HotelSystem;
+import model.Reservation;
+import model.Room;
 import model.User;
 
 import javax.swing.*;
@@ -18,6 +20,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
+import java.util.Optional;
 
 public class GuestFindAvailableRoomScreen extends JFrame {
   private DatePicker checkInDatePicker;
@@ -136,6 +139,31 @@ public class GuestFindAvailableRoomScreen extends JFrame {
     JButton confirmBtn = new JButton("Confirm");
     JButton reservationBtn = new JButton("More reservation");
     JButton DoneBtn = new JButton("Done");
+
+    confirmBtn.addActionListener(e -> {
+      Optional room = hs.getRooms().stream().filter(r -> String.valueOf(r.getNumber()).equals(room_number.getText())).findFirst();
+      if (room.isPresent()) {
+        user.addReservation(new Reservation(user, (Room) room.get(), checkInDatePicker.getValue(), checkOutDatePicker.getValue()));
+        confirmBtn.setText("confirmed");
+        confirmBtn.setEnabled(false);
+      } else {
+        JOptionPane.showMessageDialog(
+                null, "Room Number is invalid");
+      }
+
+
+    });
+
+    reservationBtn.addActionListener(e -> {
+      dispose();
+      new GuestNewReservation(size, hs, user);
+
+    });
+
+    DoneBtn.addActionListener(e -> {
+        new ChooseReceiptScreen(size, hs, user);
+        dispose();
+    });
     listPanel.add(sp);
     listPanel.add(room_number);
     listPanel.setSize( 100, 100);

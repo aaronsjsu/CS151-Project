@@ -42,6 +42,7 @@ public final class User implements Serializable
     {
         reservations.add(Objects.requireNonNull(reservation));
 	}
+	public void cancelReservation(int index) { reservations.remove(index); }
 
     /**
      * Indicates if a specified password is valid for this user.

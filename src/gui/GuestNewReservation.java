@@ -113,6 +113,7 @@ public class GuestNewReservation extends JFrame {
 
           hs.setAvailableRooms(roomType, start, end);
           new GuestFindAvailableRoomScreen(size, hs,  user, roomType, start, end);
+          dispose();
         });
 
     this.add(centerPane);

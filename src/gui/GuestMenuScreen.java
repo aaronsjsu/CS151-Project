@@ -16,19 +16,23 @@ public class GuestMenuScreen extends JFrame {
     title.setFont(new Font("Serif", Font.PLAIN, size/5));
 //    title.setPreferredSize(new Dimension(size/2, size/6));
 
-    JButton LoginBtn = new JButton("Make a reservation");
-    LoginBtn.setPreferredSize(new Dimension(size/2, size/6));
-    LoginBtn.addActionListener(e -> {
+    JButton newReservationBtn = new JButton("Make a reservation");
+    newReservationBtn.setPreferredSize(new Dimension(size/2, size/6));
+    newReservationBtn.addActionListener(e -> {
       dispose();
       new GuestNewReservation(size, hs, user);
     });
 
-    JButton SignupBtn = new JButton("View / Cancel reservation");
-    SignupBtn.setPreferredSize(new Dimension(size/2, size/6));
-    SignupBtn.addActionListener(e -> new GuestSignUpScreen(size, hs));
+    JButton viewReservationBtn = new JButton("View / Cancel reservation");
+    viewReservationBtn.addActionListener(e -> {
+      new GuestViewReservation(size, hs, user);
+      dispose();
 
-    container.add(LoginBtn);
-    container.add(SignupBtn);
+    });
+    viewReservationBtn.setPreferredSize(new Dimension(size/2, size/6));
+
+    container.add(newReservationBtn);
+    container.add(viewReservationBtn);
 
     container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
     add(title,BorderLayout.NORTH);

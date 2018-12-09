@@ -150,7 +150,9 @@ public class GuestFindAvailableRoomScreen extends JFrame {
       Optional room = hs.getRooms().stream().filter(r -> String.valueOf(r.getNumber()).equals(room_number.getText())).findFirst();
       if (room.isPresent()) {
         TimeInterval timeInterval = new TimeInterval(checkInDatePicker.getValue().atStartOfDay(), checkOutDatePicker.getValue().atStartOfDay());
-        user.addReservation(new Reservation(user, (Room) room.get(), timeInterval));
+        Reservation reservation = new Reservation(user, (Room) room.get(), timeInterval);
+        user.addReservation(reservation);
+        hs.addReservation(reservation);
         confirmBtn.setText("confirmed");
         confirmBtn.setEnabled(false);
         hs.save();

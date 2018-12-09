@@ -59,4 +59,11 @@ public class Reservation implements Serializable
 	{
 		return interval;
 	}
+	
+	/**
+	 * @return Returns the interval of the reservation as a string.
+	 */
+	public String toString() {
+		return interval.toString();
+	}
 }

@@ -89,14 +89,16 @@ public class RoomInformationComponent extends JComponent implements ChangeListen
 		LocalDate selectedDate = hs.getSelectedDate();
 		Set<Room> reservedRooms = hs.getRooms();
 		Set<Room> availableRooms = new HashSet<Room>();
+		Set<Room> throwAwayRooms = new HashSet<Room>();
 		TimeInterval ti = new TimeInterval(LocalDateTime.of(selectedDate, LocalTime.of(0,  0)), 
 										   LocalDateTime.of(selectedDate, LocalTime.of(23,  59)));
 		for (Room r : reservedRooms) {
 			if (hs.roomIsAvailable(r, ti)) {
 				availableRooms.add(r);
-				reservedRooms.remove(r);
+				throwAwayRooms.add(r);
 			} 
 		}
+		reservedRooms.removeAll(throwAwayRooms);
 
 		this.setRooms(availableRooms, reservedRooms);
 		selectedRoomPanel.removeAll();

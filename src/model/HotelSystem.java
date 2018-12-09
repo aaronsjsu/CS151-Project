@@ -5,7 +5,6 @@ import model.contracts.Savable;
 
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -18,9 +17,9 @@ public class HotelSystem implements Savable, Observable
 	/* Maps user IDs to user accounts. */
 	private final Map<String, User> users = new HashMap<>();
 	/* Three dimensional map - For each room type, tracks each room's current reservations. */
-	private final Map<Room.Type, Map<Room, TreeSet<Reservation>>> roomReservations;
+	private final Map<Room.Type, Map<Room, TreeMap<TimeInterval, Reservation>>> roomReservations;
 	/* Listeners listening for changes to the hotel system. */
-	private final Set<ChangeListener> listeners = new HashSet<>();
+	private final transient Set<ChangeListener> listeners = new HashSet<>();
 	
 	/** Read-only map dictating the number of initial vacancies per room-type. */
 	public static final Map<Room.Type, Integer> roomTypeVacancies = Stream.of(
@@ -48,13 +47,105 @@ public class HotelSystem implements Savable, Observable
 		{
 			final Room.Type type = e.getKey();
 			final int rooms = e.getValue();
-			final Map<Room, TreeSet<Reservation>> res = new LinkedHashMap<>(rooms);
+			final Map<Room, Map<TimeInterval, Reservation>> res = new LinkedHashMap<>(rooms);
 			for (int i = 0; i < rooms; i++)
 			{
 				final Room r = new Room(roomNumberCounter++, type);
-				res.put(r, new TreeSet<>());
+				res.put(r, new TreeMap<>());
 			}
 		}
+	}
+
+	/**
+	 * Adds a reservation to the hotel system.
+	 * Notifies all listeners of a change to the hotel system.
+	 * 
+	 * @param reservation Reservation to add.
+	 */
+	public void addReservation(final Reservation reservation)
+	{
+		final Room r = Objects.requireNonNull(reservation.getRoom());
+		final User u = reservation.getUser();
+		final TimeInterval ti = reservation.getInterval();
+		if (!roomIsAvailable(r, ti))
+			throw new IllegalArgumentException("Room cannot be reserved!");
+		final Map<Room, TreeMap<TimeInterval, Reservation>> res = roomReservations.get(r.getType());
+		final Map<TimeInterval, Reservation> schedule = res.get(r);
+		schedule.put(ti, reservation);
+		/* Inform the user he has just made a reservation. */
+		u.addReservation(reservation);
+		/* Notify listeners that a reservation was added. */
+		listeners.forEach(l -> l.stateChanged(new ChangeEvent(this)));
+	}
+	
+	// TODO: Implement cancellation of reservations.
+
+	/**
+	 * Retrieves all rooms of a specified type which are available in a specified time interval.
+	 * 
+	 * @param type Type of room to search for.
+	 * @param interval Time interval in which the room must be available.
+	 * @return Set of all available rooms.
+	 */
+	public Set<Room> getAvailableRooms(final Room.Type type, final TimeInterval interval)
+	{
+		final Map<Room, TreeMap<TimeInterval, Reservation>> roomRes = 
+				roomReservations.get(Objects.requireNonNull(type));
+		assert roomRes != null;
+		Objects.requireNonNull(interval);
+		final Set<Room> output = new LinkedHashSet<>();
+		for (final Map.Entry<Room, TreeMap<TimeInterval, Reservation>> e : roomRes.entrySet())
+		{
+			final Room r = e.getKey();
+			if (roomIsAvailable(r, interval))
+				output.add(r);
+		}
+		
+		return output;
+	}
+
+	/**
+	 * Determines if a specified room is available during a specified time interval.
+	 * 
+	 * @param room Room to check vacancy of.
+	 * @param interval Time interval which is checked.
+	 * @return true if the room is available during the time interval.
+	 */
+	public boolean roomIsAvailable(final Room room, final TimeInterval interval)
+	{
+		final Room.Type t = Objects.requireNonNull(room).getType();
+		final Map<Room, TreeMap<TimeInterval, Reservation>> roomRes =
+				roomReservations.get(Objects.requireNonNull(t));
+		assert roomRes != null;
+		final TreeMap<TimeInterval, Reservation> schedule = roomRes.get(room);
+		final TimeInterval floorI = schedule.floorKey(Objects.requireNonNull(interval));
+		if (floorI != null && !floorI.end.isBefore(interval.start))
+			return false;
+		final TimeInterval ceilI = schedule.ceilingKey(interval);
+		return ceilI == null || ceilI.start.isAfter(interval.end);
+	}
+
+	/**
+	 * Adds a user to the hotel system.
+	 * 
+	 * @param user User to be added.
+	 */
+	public void addUser(final User user)
+	{
+		users.put(Objects.requireNonNull(user).getID(), user);
+	}
+
+	/**
+	 * Retrieves a user account with the specified credentials.
+	 * 
+	 * @param id ID of the user.
+	 * @param password Password of the user.
+	 * @return User account with the specified credentials, or null if none exist.
+	 */
+	public User getUser(final String id, final String password)
+	{
+		final User u = users.get(Objects.requireNonNull(id));
+		return u != null && u.validatePassword(Objects.requireNonNull(password)) ? u : null;
 	}
 
 	/**
@@ -91,91 +182,13 @@ public class HotelSystem implements Savable, Observable
 		return Savable.save(this, SAVE_FILE_NAME);
 	}
 
-	/* DEPRECATED BELOW */
-
-	public void addReservation(Reservation r ) {
-		reservations.add(r);
-	}
-
-	public void addRoom(Room r) {
-		rooms.add(r);
-	}
-
-  public void addUser(User user) {
-	  users.put(user.getID(), user);
-  }
-
-	public Boolean isUserIdExisted(String id) {
-		return this.users.containsKey(id);
-	}
-	
-	public User getUser(String id, String password) {
-		return (!isUserIdExisted(id) || !users.get(id).validatePassword(password)) ? null : users.get(id);
-	}
-
-	public List<Room> getRooms() {
-		return rooms;
-	}
-	
-	public List<Reservation> getReservations() {
-		return reservations;
-	}
-	
-	public void setSelectedDate(LocalDate date) {
-		selectedDate = date;
-	}
-	
-	public LocalDate getSelectedDate() {
-		return selectedDate;
-	}
-	
-	public void setSelectedRoom(Room r) {
-		selectedRoom = r;
-	}
-	
-	public Room getSelectedRoom() {
-		return selectedRoom;
-	}
-
-//	@Override
-//	public void addListener(ChangeListener listener) {
-//		listeners.add(listener);
-//	}
-//
-//	@Override
-//	public boolean removeListener(ChangeListener listener) {
-//		return listeners.remove(listener);
-//	}
-//
-//	public void updateListeners() {
-//		for (ChangeListener l : listeners) {
-//			l.fire();
-//		}
-//	}
-
-	// Kevin I want you add find available rooms method here.
-	public void setAvailableRooms(String roomType, LocalDate start, LocalDate end) {
-
-		this.availableRooms[0] = "12141";
-		if(roomType != "Economic") this.availableRooms[1] = "1111";
-		else this.availableRooms[0] = "22222";
-		ChangeEvent event = new ChangeEvent(this);
-		for (ChangeListener listener : listeners)
-			listener.stateChanged(event);
-	}
-
-	public void addChangeListener(ChangeListener listener)
+	/**
+	 * Loads this hotel system from the storage medium.
+	 * 
+	 * @return Hotel system from the storage medium, or null.
+	 */
+	public static HotelSystem load()
 	{
-		listeners.add(listener);
-	}
-
-
-
-	public String[] getAvailableRooms() {
-		return availableRooms;
-	}
-
-	public void setAvailableRooms(String[] availableRooms) {
-		this.availableRooms = availableRooms;
+		return Savable.load(SAVE_FILE_NAME);
 	}
 }

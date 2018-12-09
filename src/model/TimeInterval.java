@@ -24,6 +24,7 @@ public class TimeInterval implements Comparable<TimeInterval>
 
     /**
      * Constructs a time interval with a specified start and ending time.
+     * 
      * The starting time must not be after the ending time.
      * Reversely, the ending time must not be before the starting time.
      * @param start Starting time of the interval.
@@ -39,6 +40,7 @@ public class TimeInterval implements Comparable<TimeInterval>
 
     /**
      * Constructs a time interval given a single point in time.
+     * 
      * @param point Point in time to treat as an interval.
      */
     public TimeInterval(final LocalDateTime point)
@@ -48,6 +50,7 @@ public class TimeInterval implements Comparable<TimeInterval>
 
     /**
      * Compares this object with the specified object for order.
+     * 
      * @param o the object to be compared.
      * @return a negative integer, zero, or a positive integer as this object
      * is less than, equal to, or greater than the specified object.

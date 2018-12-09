@@ -1,12 +1,13 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * Models a hotel room for the hotel reservation system. Each room 
  * keeps track of its number and rate. 
  */
-public class Room implements Comparable<Room>
+public class Room implements Comparable<Room>, Serializable
 {
 	/* Room number. */
 	private final int number;

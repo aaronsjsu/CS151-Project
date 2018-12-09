@@ -10,7 +10,9 @@ import java.util.List;
  */
 public class Receipt
 {
+    /* The reservations the user has made this transaction. */
     private List<Reservation> reservedRooms;
+    /* Running sum of how much the user owes. */
     private int totalAmount;
     private String userName;
     
@@ -33,6 +35,6 @@ public class Receipt
     public void setUserName(String userName) {
         this.userName = userName;
     }
-
-
+    
+    
 }

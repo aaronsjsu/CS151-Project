@@ -2,11 +2,10 @@ package gui;
 
 import model.HotelSystem;
 import model.User;
+import model.receipt.ReceiptFormatter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * Gui for guest to choose a type of receipt.
@@ -25,7 +24,7 @@ public class ChooseReceiptScreen extends JFrame {
     JButton managerButton = new JButton("Simple");
     managerButton.addActionListener(e -> {
       frame.dispose();
-      new ShowReceiptScreen(size, hs, user, "simple");
+      new ShowReceiptScreen(size, hs, user, ReceiptFormatter.SIMPLE);
     });
     managerButton.setPreferredSize(new Dimension(size/2, size/6));
     managerButton.setFocusable(false);
@@ -33,7 +32,7 @@ public class ChooseReceiptScreen extends JFrame {
     guestButton.addActionListener(e -> {
       // Close this frame and open the guest menu frame.
       frame.dispose();
-      new ShowReceiptScreen(size, hs, user, "comprehensive");
+      new ShowReceiptScreen(size, hs, user, ReceiptFormatter.COMPREHENSIVE);
     });
     guestButton.setPreferredSize(new Dimension(size/2, size/6));
     guestButton.setFocusable(false);

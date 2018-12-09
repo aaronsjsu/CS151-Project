@@ -48,6 +48,7 @@ public enum ReceiptFormatter
 
     /**
      * Formats a specified receipt for viewing.
+     * 
      * @param receipt Receipt to format.
      * @return String of the formatted receipt.
      */

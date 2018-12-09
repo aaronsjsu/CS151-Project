@@ -1,6 +1,5 @@
-package model.contracts;
+package model.receipt;
 
-import model.Receipt;
 import model.Reservation;
 import model.User;
 

@@ -1,4 +1,6 @@
-package model;
+package model.receipt;
+
+import model.Reservation;
 
 import java.util.ArrayList;
 import java.util.List;

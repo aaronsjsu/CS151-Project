@@ -48,7 +48,9 @@ public class ManagerScreen extends JFrame {
 				// TODO Displays room information
 				JPanel innerPanel = new JPanel();
 				innerPanel.setLayout(new GridLayout(2, 1, size/10, size/10));
-				innerPanel.add(new CalendarComponent(size, hs));
+				CalendarComponent c = new CalendarComponent(size, hs);
+				c.setPreferredSize(new Dimension(size*2, size/3));
+				innerPanel.add(c);
 				innerPanel.add(new SelectRoomComponent(size, hs));
 				dataPanel.add(innerPanel, BorderLayout.WEST);
 				dataPanel.add(new RoomInformationComponent(size, hs), BorderLayout.EAST);
@@ -98,7 +100,6 @@ public class ManagerScreen extends JFrame {
 		this.setTitle("Hotel Reservation System");
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		//this.setSize(3*size/2, size);
 		this.pack();
 	}
 }

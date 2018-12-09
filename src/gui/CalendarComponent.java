@@ -100,8 +100,6 @@ public class CalendarComponent extends JComponent {
 				if (cellValue != null && cellValue instanceof Integer) {
 					LocalDate selectedDate = LocalDate.of(currentDate.getYear(), currentDate.getMonth(), (int)cellValue);
 					hs.setSelectedDate(selectedDate);
-					System.out.println(cellValue);
-					// TODO Display reservations on the specified date
 				}
 			 }
 		});

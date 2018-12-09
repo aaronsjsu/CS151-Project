@@ -60,4 +60,11 @@ public class TimeInterval implements Comparable<TimeInterval>, Serializable
     {
         return start.compareTo(o.start);
     }
+    
+    /**
+     * @return Returns the interval as a string. 
+     */
+    public String toString() {
+    	return start.toString() + "-" + end.toString();
+    }
 }

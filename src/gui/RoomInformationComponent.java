@@ -7,6 +7,7 @@ import java.time.LocalTime;
 
 import javax.swing.*;
 import model.HotelSystem;
+import model.Reservation;
 import model.Room;
 import model.TimeInterval;
 import javax.swing.event.ChangeEvent;
@@ -21,8 +22,8 @@ import java.util.HashSet;
  * @version 1.0 12/8/18 
  */
 public class RoomInformationComponent extends JComponent implements ChangeListener {
-	JLabel roomData;
 	JPanel roomDataPanel;
+	JPanel selectedRoomPanel;
 	HotelSystem hs;
 	Font font;
 	Font boldFont;
@@ -42,15 +43,12 @@ public class RoomInformationComponent extends JComponent implements ChangeListen
 		title.setFont(largeFont);
 		JLabel selectedRoom = new JLabel("Selected Room:");
 		selectedRoom.setFont(font);
-		roomData = new JLabel("No Room Selected");
-		roomData.setFont(font);
 		
 		roomDataPanel = new JPanel();
 		roomDataPanel.setLayout(new GridLayout(23, 1, 1, 1));
-		JPanel selectedRoomPanel = new JPanel();
-		selectedRoomPanel.setLayout(new BorderLayout());
-		selectedRoomPanel.add(selectedRoom, BorderLayout.NORTH);
-		selectedRoomPanel.add(roomData, BorderLayout.SOUTH);
+		selectedRoomPanel = new JPanel();
+		selectedRoomPanel.setLayout(new GridLayout(5, 1, 1, 1));
+		selectedRoomPanel.add(selectedRoom);
 		this.setLayout(new BorderLayout());
 		this.add(title, BorderLayout.NORTH);
 		this.add(roomDataPanel, BorderLayout.CENTER);
@@ -101,9 +99,19 @@ public class RoomInformationComponent extends JComponent implements ChangeListen
 		}
 
 		this.setRooms(availableRooms, reservedRooms);
+		selectedRoomPanel.removeAll();
+		selectedRoomPanel.add(new JLabel("Selected Room:"));
 		Room selectedRoom = hs.getSelectedRoom();
 		if (selectedRoom != null) {
-			roomData.setText(selectedRoom.toString());
+			selectedRoomPanel.add(new JLabel(selectedRoom.toString() + " $" + selectedRoom.getType().getRate()));
+			Set<Reservation> reservations = hs.getReservations();
+			if (reservations != null) {
+				for (Reservation r : reservations) {
+					if (r.getRoom() == selectedRoom) {
+						selectedRoomPanel.add(new JLabel(r.toString()));
+					}
+				}
+			}
 			//information of the selected room including room number, price 
 			//and periods of valid reservations of this room (e.g. 11/28/18-
 			//11/30/18, 12/25/18-12/26/18).

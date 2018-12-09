@@ -134,6 +134,14 @@ public class HotelSystem implements Savable, Observable
 				.flatMap(Set::stream)
 				.collect(Collectors.toCollection(LinkedHashSet::new));
 	}
+	
+	/*
+	 * @return Set of all reservations in the hotel system.
+	 */
+	public Set<Reservation> getReservations() {
+		//TODO
+		return null;
+	}
 
 	/**
 	 * Determines if a specified room is available during a specified time interval.

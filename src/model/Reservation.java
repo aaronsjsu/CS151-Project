@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -16,6 +17,8 @@ public class Reservation implements Serializable
 	private final Room room;
 	/* Interval in which the reservation will last for. */
 	private final TimeInterval interval;
+	/* The date in which the reservation was made. */
+	private final LocalDate dateCreated = LocalDate.now();
 
     /**
      * The maximum amount of days a reservation can last for.
@@ -65,5 +68,13 @@ public class Reservation implements Serializable
 	 */
 	public String toString() {
 		return interval.toString();
+	}
+
+	/**
+	 * @return Date in which the reservation was made.
+	 */
+	public LocalDate getDateCreated()
+	{
+		return dateCreated;
 	}
 }

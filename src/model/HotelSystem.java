@@ -2,6 +2,7 @@ package model;
 
 import model.contracts.Observable;
 import model.contracts.Savable;
+import model.receipt.Receipt;
 
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -38,6 +39,7 @@ public class HotelSystem implements Savable, Observable
 	private String[] availableRooms;
 	private LocalDate selectedDate;
 	private Room selectedRoom;
+	public Receipt receipt;
 	
 	/* All reservations are saved to the storage medium under this name. */
 	private static final String SAVE_FILE_NAME = "Reservations.ser";
@@ -84,9 +86,9 @@ public class HotelSystem implements Savable, Observable
 		u.addReservation(reservation);
 		/* Notify listeners that a reservation was added. */
 		listeners.forEach(l -> l.stateChanged(new ChangeEvent(this)));
+		save();
 	}
 	
-	// TODO: Implement cancellation of reservations.
 	public String[] getAvailableRooms() {
 		return availableRooms;
 	}
@@ -172,6 +174,7 @@ public class HotelSystem implements Savable, Observable
 		if (userExists(id))
 			throw new IllegalStateException("The specified user already exists!");
 		users.put(id, user);
+		save();
 	}
 
 	/**

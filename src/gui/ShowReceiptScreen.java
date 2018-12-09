@@ -1,9 +1,8 @@
 package gui;
 
 import model.HotelSystem;
-import model.ReceiptFactory;
-import model.contracts.ReceiptFormatter;
 import model.User;
+import model.receipt.ReceiptFormatter;
 
 import javax.swing.*;
 
@@ -12,12 +11,13 @@ import javax.swing.*;
  * @author Ryongji Park
  */
 public class ShowReceiptScreen extends JFrame {
-  public ShowReceiptScreen(int size, HotelSystem hs, User user, String type) {
-    ReceiptFactory receiptFactory = new ReceiptFactory();
-    ReceiptFormatter receipt = receiptFactory.createReceipt(type);
-    final JTextArea textArea = new JTextArea(20, 40);
-
-
-
-  }
+    public ShowReceiptScreen(int size, HotelSystem hs, User user, ReceiptFormatter formatter)
+    {
+        final JTextArea textArea = new JTextArea(20, 40);
+        
+        textArea.setText("");
+        
+        setVisible(true);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+    }
 }

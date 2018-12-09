@@ -1,38 +1,97 @@
 package model;
 
+import model.contracts.Observable;
+import model.contracts.Savable;
+
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
- * Models the system itself for the hotel reservation system. This keeps track of 
- * all users, reservations, rooms, etc.
+ * Defines a data structure which manages rooms and reservations.
  */
-public class HotelSystem
+public class HotelSystem implements Savable, Observable
 {
 	/* Maps user IDs to user accounts. */
-	private final Map<String, User> users;
+	private final Map<String, User> users = new HashMap<>();
 	/* Three dimensional map - For each room type, tracks each room's current reservations. */
 	private final Map<Room.Type, Map<Room, TreeSet<Reservation>>> roomReservations;
 	/* Listeners listening for changes to the hotel system. */
 	private final Set<ChangeListener> listeners = new HashSet<>();
 	
-    /** Maximum number of rooms available in the hotel at any given time. */
-    public static final int MAXIMUM_VACANCY = 20;
-    /** Number of luxurious rooms available in the hotel. */
-    public static final int LUXURIOUS_ROOMS = 10;
+	/** Read-only map dictating the number of initial vacancies per room-type. */
+	public static final Map<Room.Type, Integer> roomTypeVacancies = Stream.of(
+			new AbstractMap.SimpleEntry<>(Room.Type.ECONOMIC, 10),
+			new AbstractMap.SimpleEntry<>(Room.Type.LUXURIOUS, 10))
+			.collect(Collectors.collectingAndThen(
+					Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue),
+					Collections::unmodifiableMap));
+	/** Total number of initial vacancies of the hotel. */
+	public static final int HOTEL_TOTAL_VACANCIES = roomTypeVacancies.entrySet().stream()
+			.mapToInt(Map.Entry::getValue)
+			.sum();
 	
+	/* All reservations are saved to the storage medium under this name. */
+	private static final String SAVE_FILE_NAME = "Reservations.ser";
+
+	/**
+	 * Constructs a default hotel system.
+	 */
 	public HotelSystem()
 	{
-		users = new HashMap<>();
-		
-		reservations = new ArrayList<>();
-		rooms = new ArrayList<>();
-		listeners = new ArrayList<>();
-		selectedDate = LocalDate.now();
-		availableRooms = new String[MAXIMUM_VACANCY];
+		roomReservations = new HashMap<>(roomTypeVacancies.size());
+		int roomNumberCounter = 1;
+		for (final Map.Entry<Room.Type, Integer> e : roomTypeVacancies.entrySet())
+		{
+			final Room.Type type = e.getKey();
+			final int rooms = e.getValue();
+			final Map<Room, TreeSet<Reservation>> res = new LinkedHashMap<>(rooms);
+			for (int i = 0; i < rooms; i++)
+			{
+				final Room r = new Room(roomNumberCounter++, type);
+				res.put(r, new TreeSet<>());
+			}
+		}
 	}
+
+	/**
+	 * Adds a listener to listen for changes from the observable.
+	 *
+	 * @param listener Listener to be notified of changes.
+	 */
+	@Override public void addListener(ChangeListener listener)
+	{
+		listeners.add(Objects.requireNonNull(listener));
+	}
+
+	/**
+	 * Removes a listener from the observable.
+	 * After the operation, the listener will no longer be notified.
+	 *
+	 * @param listener Listener to remove.
+	 * @return true if the listener was successfully removed.
+	 */
+	@Override public boolean removeListener(ChangeListener listener)
+	{
+		return listeners.remove(Objects.requireNonNull(listener));
+	}
+
+	/**
+	 * Saves this object to the storage medium.
+	 * Implementations should call Savable.save and
+	 * Savable.load for simplified saving and loading.
+	 *
+	 * @return true if the object was successfully saved.
+	 */
+	@Override public boolean save()
+	{
+		return Savable.save(this, SAVE_FILE_NAME);
+	}
+
+	/* DEPRECATED BELOW */
 
 	public void addReservation(Reservation r ) {
 		reservations.add(r);

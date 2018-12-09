@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
@@ -7,19 +8,19 @@ import java.time.LocalDate;
  * knows the User that made the reservation, which room the reservation is for, and 
  * the time period for the reservation.
  */
-public class Reservation
+public class Reservation implements Comparable<Reservation>, Serializable
 {
-	private User user;
-	private Room room;
-	private LocalDate startDate;
-	private LocalDate endDate;
+	private final User user;
+	private final Room room;
+	private final TimeInterval interval;
 
     /**
      * The maximum amount of days a reservation can last for.
      */
 	public static final int MAXIMUM_DURATION_DAYS = 60;
 	
-	public Reservation(User user, Room room, LocalDate startDate, LocalDate endDate) {
+	public Reservation(User user, Room room, LocalDate startDate, LocalDate endDate)
+	{
 		this.user = user;
 		this.room = room;
 		this.startDate = startDate;

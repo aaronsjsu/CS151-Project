@@ -1,4 +1,4 @@
-package model;
+package model.contracts;
 
 import javax.swing.event.ChangeListener;
 

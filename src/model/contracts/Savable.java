@@ -1,4 +1,4 @@
-package model;
+package model.contracts;
 
 import java.io.*;
 import java.util.Objects;

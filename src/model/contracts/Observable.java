@@ -1,15 +1,14 @@
-package model.observable;
+package model.contracts;
+
+import javax.swing.event.ChangeListener;
 
 /**
  * Defines an observer design pattern.
- * This acts as a replacement for the outdated listeners
- * that were created before generics were implemented.
  *
- * @param <T> Data type of the change listeners.
- * @see ChangeListener
+ * @see javax.swing.event.ChangeListener
  * @since 1.0
  */
-public interface Observable<T>
+public interface Observable
 {
     /**
      * Adds a listener to listen for changes from the observable.

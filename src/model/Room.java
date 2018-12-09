@@ -6,7 +6,7 @@ import java.util.Objects;
  * Models a hotel room for the hotel reservation system. Each room 
  * keeps track of its number and rate. 
  */
-public class Room
+public class Room implements Comparable<Room>
 {
 	/* Room number. */
 	private final int number;
@@ -24,11 +24,6 @@ public class Room
 		this.number = number;
 		this.type = Objects.requireNonNull(type);
 	}
-	
-	@Override
-	public String toString() {
-		return "Room " + number + ", " + type;
-	}
 
 	/**
 	 * @return Number of the room.
@@ -44,6 +39,26 @@ public class Room
 	public Type getType()
     {
         return type;
+    }
+
+    /**
+     * Compares this object with the specified object for order.
+     * 
+     * @param o the object to be compared.
+     * @return a negative integer, zero, or a positive integer as this object
+     * is less than, equal to, or greater than the specified object.
+     */
+    @Override public int compareTo(final Room o)
+    {
+        return Integer.compare(number, o.number);
+    }
+
+    /**
+     * @return String representation of the room.
+     */
+    @Override public String toString()
+    {
+        return "Room " + number + ", " + type;
     }
 
     /**

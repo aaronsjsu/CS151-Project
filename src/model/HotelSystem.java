@@ -132,7 +132,19 @@ public class HotelSystem implements Savable, Observable
 	 */
 	public void addUser(final User user)
 	{
-		users.put(Objects.requireNonNull(user).getID(), user);
+		final String id = Objects.requireNonNull(user).getID();
+		if (userExists(id))
+			throw new IllegalStateException("The specified user already exists!");
+		users.put(id, user);
+	}
+
+	/**
+	 * @param id ID to check.
+	 * @return true if a user exists with the specified ID.
+	 */
+	public boolean userExists(final String id)
+	{
+		return users.containsKey(Objects.requireNonNull(id));
 	}
 
 	/**

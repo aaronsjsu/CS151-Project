@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -8,7 +9,7 @@ import java.util.Objects;
  *
  * @since 1.0
  */
-public class TimeInterval implements Comparable<TimeInterval>
+public class TimeInterval implements Comparable<TimeInterval>, Serializable
 {
     /**
      * The time in which the interval begins.

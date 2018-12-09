@@ -10,7 +10,7 @@ public class Launcher
 {
 	public static void main(String args[])
 	{
-		int SCREEN_SIZE = 750;
+		final int SCREEN_SIZE = 750;
 		HotelSystem hs = new HotelSystem();
 		InitialScreen screen = new InitialScreen(SCREEN_SIZE, hs);
 	}

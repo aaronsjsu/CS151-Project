@@ -105,6 +105,17 @@ public class HotelSystem implements Savable, Observable
 	}
 
 	/**
+	 * @return Set of all rooms in the hotel system.
+	 */
+	public Set<Room> getRooms()
+	{
+		return roomReservations.values().stream()
+				.map(Map::keySet)
+				.flatMap(Set::stream)
+				.collect(Collectors.toCollection(LinkedHashSet::new));
+	}
+
+	/**
 	 * Determines if a specified room is available during a specified time interval.
 	 * 
 	 * @param room Room to check vacancy of.

@@ -10,7 +10,7 @@ public class ShowReceiptScreen {
     ReceiptFactory receiptFactory = new ReceiptFactory();
     ReceiptFormatter receipt = receiptFactory.createReceipt(type);
 
-    
+
 
   }
 }

@@ -35,14 +35,14 @@ public enum ReceiptFormatter
     {
         @Override public String formatReceipt(final Receipt receipt)
         {
-            return null;
+            return "";
         }
     },
     COMPREHENSIVE
     {
         @Override public String formatReceipt(final Receipt receipt)
         {
-            return null;
+            return "";
         }
     };
 

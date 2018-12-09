@@ -86,9 +86,9 @@ public class HotelSystem implements Savable, Observable
 		u.addReservation(reservation);
 		/* Notify listeners that a reservation was added. */
 		listeners.forEach(l -> l.stateChanged(new ChangeEvent(this)));
+		save();
 	}
 	
-	// TODO: Implement cancellation of reservations.
 	public String[] getAvailableRooms() {
 		return availableRooms;
 	}
@@ -166,6 +166,7 @@ public class HotelSystem implements Savable, Observable
 		if (userExists(id))
 			throw new IllegalStateException("The specified user already exists!");
 		users.put(id, user);
+		save();
 	}
 
 	/**

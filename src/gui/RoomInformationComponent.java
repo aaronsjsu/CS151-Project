@@ -85,8 +85,7 @@ public class RoomInformationComponent extends JComponent implements ChangeListen
 		//reservedLabel.setText(reserved);
 	}
 
-	@Override
-	public void fire() {
+	@Override public void fire() {
 		LocalDate selectedDate = hs.getSelectedDate();
 		List<Reservation> reservations = hs.getReservations();
 		List<Room> reservedRooms = new ArrayList<>();

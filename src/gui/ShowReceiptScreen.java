@@ -2,7 +2,7 @@ package gui;
 
 import model.HotelSystem;
 import model.ReceiptFactory;
-import model.ReceiptFormatter;
+import model.contracts.ReceiptFormatter;
 import model.User;
 
 import javax.swing.*;

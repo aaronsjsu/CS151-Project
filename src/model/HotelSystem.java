@@ -55,12 +55,13 @@ public class HotelSystem implements Savable, Observable
 		{
 			final Room.Type type = e.getKey();
 			final int rooms = e.getValue();
-			final Map<Room, Map<TimeInterval, Reservation>> res = new LinkedHashMap<>(rooms);
+			final Map<Room, TreeMap<TimeInterval, Reservation>> res = new LinkedHashMap<>(rooms);
 			for (int i = 0; i < rooms; i++)
 			{
 				final Room r = new Room(roomNumberCounter++, type);
 				res.put(r, new TreeMap<>());
 			}
+			roomReservations.put(type, res);
 		}
 		availableRooms = new String[roomTypeVacancies.size()];
 		selectedDate = LocalDate.now();

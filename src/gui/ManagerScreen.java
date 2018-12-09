@@ -35,7 +35,7 @@ public class ManagerScreen extends JFrame {
 		JButton loadButton = new JButton("Load Existing Reservations");
 		loadButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// TODO Load existing reservations from reservations.txt
+				hs.load();
 				loadButton.setEnabled(false);
 			}
 		});
@@ -64,7 +64,7 @@ public class ManagerScreen extends JFrame {
 		JButton saveButton = new JButton("Save Reservations");
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// TODO Saves data to reservations.txt
+				hs.save();
 			}
 		});
 		saveButton.setPreferredSize(new Dimension(size/2, size/6));
@@ -73,7 +73,7 @@ public class ManagerScreen extends JFrame {
 		JButton quitButton = new JButton("Back/Quit");
 		quitButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// TODO System saves and quits
+				hs.save();
 				frame.dispose();
 				new InitialScreen(size, hs);
 			}

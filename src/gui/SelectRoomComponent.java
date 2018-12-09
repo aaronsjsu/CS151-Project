@@ -7,6 +7,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.*;
 
@@ -36,15 +37,13 @@ public class SelectRoomComponent extends JComponent {
 		buttonPanel.setLayout(new GridLayout(5, 4, 0, 0));
 		buttonPanel.setVisible(true);
 		
-		List<Room> rooms = hs.getRooms();
-		for (int i = 1; i <= rooms.size(); i++) {
-			Room r = rooms.get(i - 1);
+		Set<Room> rooms = hs.getRooms();
+		for (Room r : rooms) {
 			JButton button = new JButton();
-			button.setText("" + i);
+			button.setText("" + r.getNumber());
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					hs.setSelectedRoom(r);
-					//hs.updateListeners();
 					System.out.println(r);
 				}
 			});

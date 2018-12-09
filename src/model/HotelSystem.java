@@ -90,6 +90,7 @@ public class HotelSystem implements Savable, Observable
 	public String[] getAvailableRooms() {
 		return availableRooms;
 	}
+	
 	/**
 	 * Retrieves all rooms of a specified type which are available in a specified time interval.
 	 * 

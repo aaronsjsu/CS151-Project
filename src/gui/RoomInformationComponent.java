@@ -2,14 +2,17 @@ package gui;
 
 import java.awt.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 import javax.swing.*;
 import model.HotelSystem;
-import model.Reservation;
 import model.Room;
+import model.TimeInterval;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 
 /**
  * Component to view hotel room information. Automatically updated
@@ -61,9 +64,9 @@ public class RoomInformationComponent extends JComponent implements ChangeListen
 	 * @param availableRooms The rooms that are available on the selected date.
 	 * @param reservedRooms The rooms that are reserved on the selected date.
 	 */
-	private void setRooms(List<Room> availableRooms, List<Room> reservedRooms) {
+	private void setRooms(Set<Room> availableRooms, Set<Room> reservedRooms) {
 		roomDataPanel.removeAll();
-		JLabel l = new JLabel("Available Rooms (date):");
+		JLabel l = new JLabel("Available Rooms ("+hs.getSelectedDate()+"):");
 		l.setFont(boldFont);
 		roomDataPanel.add(l);
 		for (Room room : availableRooms) {
@@ -76,7 +79,7 @@ public class RoomInformationComponent extends JComponent implements ChangeListen
 			label.setFont(font);
 			roomDataPanel.add(label);
 		}
-		l = new JLabel("Reserved Rooms (date):");
+		l = new JLabel("Reserved Rooms ("+hs.getSelectedDate()+"):");
 		l.setFont(boldFont);
 		roomDataPanel.add(l);
 	}
@@ -86,15 +89,17 @@ public class RoomInformationComponent extends JComponent implements ChangeListen
 	 */
 	private void update() {
 		LocalDate selectedDate = hs.getSelectedDate();
-		List<Reservation> reservations = hs.getReservations();
-		List<Room> reservedRooms = new ArrayList<>();
-		List<Room> availableRooms = hs.getRooms();
-		for (Reservation r : reservations) {
-			if (r.getStartDate().compareTo(selectedDate) >= 0 && r.getEndDate().compareTo(selectedDate) <= 0) {
-				reservedRooms.add(r.getRoom());
-			}
+		Set<Room> reservedRooms = hs.getRooms();
+		Set<Room> availableRooms = new HashSet<Room>();
+		TimeInterval ti = new TimeInterval(LocalDateTime.of(selectedDate, LocalTime.of(0,  0)), 
+										   LocalDateTime.of(selectedDate, LocalTime.of(23,  59)));
+		for (Room r : reservedRooms) {
+			if (hs.roomIsAvailable(r, ti)) {
+				availableRooms.add(r);
+				reservedRooms.remove(r);
+			} 
 		}
-		availableRooms.removeAll(reservedRooms);
+
 		this.setRooms(availableRooms, reservedRooms);
 		Room selectedRoom = hs.getSelectedRoom();
 		if (selectedRoom != null) {

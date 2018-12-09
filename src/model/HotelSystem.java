@@ -5,6 +5,8 @@ import model.contracts.Savable;
 
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -34,6 +36,8 @@ public class HotelSystem implements Savable, Observable
 			.sum();
 
 	private String[] availableRooms;
+	private LocalDate selectedDate;
+	private Room selectedRoom;
 	
 	/* All reservations are saved to the storage medium under this name. */
 	private static final String SAVE_FILE_NAME = "Reservations.ser";
@@ -57,6 +61,7 @@ public class HotelSystem implements Savable, Observable
 			}
 		}
 		availableRooms = new String[roomTypeVacancies.size()];
+		selectedDate = LocalDate.now();
 	}
 
 	/**
@@ -226,6 +231,37 @@ public class HotelSystem implements Savable, Observable
 		return Savable.load(SAVE_FILE_NAME);
 	}
 
+	/**
+	 * Sets the currently selected date. Used for mvc pattern.
+	 * @param date The date to set the selected date to.
+	 */
+	public void setSelectedDate(LocalDate date) {
+		this.selectedDate = date;
+		listeners.forEach(l -> l.stateChanged(new ChangeEvent(this)));
+	}
 
+	/**
+	 * Returns the currently selected date.
+	 * @return The currently selected date.
+	 */
+	public LocalDate getSelectedDate() {
+		return selectedDate;
+	}
+	
+	/**
+	 * Sets the currently selected room. Used for mvc pattern.
+	 * @param r The room to assign to the selected room.
+	 */
+	public void setSelectedRoom(Room r) {
+		this.selectedRoom = r;
+		listeners.forEach(l -> l.stateChanged(new ChangeEvent(this)));
+	}
 
+	/**
+	 * Returns the currently selected room.
+	 * @return The currently selected room.
+	 */
+	public Room getSelectedRoom() {
+		return selectedRoom;
+	}
 }

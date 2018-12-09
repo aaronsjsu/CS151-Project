@@ -79,7 +79,7 @@ public class GuestFindAvailableRoomScreen extends JFrame {
                       setStyle("-fx-background-color: #ffc0cb;");
                     }
                     TimeInterval timeInterval = new TimeInterval(checkInDatePicker.getValue().atStartOfDay(), checkOutDatePicker.getValue().atStartOfDay());
-                    if (roomType.equals("Economic")) hs.setAvailableRooms(Room.Type.ECONOMIC,timeInterval);
+                    if (ckbox1.isSelected()) hs.setAvailableRooms(Room.Type.ECONOMIC,timeInterval);
                     else hs.setAvailableRooms(Room.Type.LUXURIOUS,timeInterval);
                   }
                 };
@@ -101,7 +101,7 @@ public class GuestFindAvailableRoomScreen extends JFrame {
                       setStyle("-fx-background-color: #ffc0cb;");
                     }
                     TimeInterval timeInterval = new TimeInterval(checkInDatePicker.getValue().atStartOfDay(), checkOutDatePicker.getValue().atStartOfDay());
-                    if (roomType.equals("Economic")) hs.setAvailableRooms(Room.Type.ECONOMIC,timeInterval);
+                    if (ckbox1.isSelected()) hs.setAvailableRooms(Room.Type.ECONOMIC,timeInterval);
                     else hs.setAvailableRooms(Room.Type.LUXURIOUS,timeInterval);
                   }
                 };
@@ -147,11 +147,13 @@ public class GuestFindAvailableRoomScreen extends JFrame {
     JButton DoneBtn = new JButton("Done");
 
     confirmBtn.addActionListener(e -> {
-      Optional room = hs.roomTypeVacancies.stream().filter(r -> String.valueOf(r.getNumber()).equals(room_number.getText())).findFirst();
+      Optional room = hs.getRooms().stream().filter(r -> String.valueOf(r.getNumber()).equals(room_number.getText())).findFirst();
       if (room.isPresent()) {
-        user.addReservation(new Reservation(user, (Room) room.get(), checkInDatePicker.getValue(), checkOutDatePicker.getValue()));
+        TimeInterval timeInterval = new TimeInterval(checkInDatePicker.getValue().atStartOfDay(), checkOutDatePicker.getValue().atStartOfDay());
+        user.addReservation(new Reservation(user, (Room) room.get(), timeInterval));
         confirmBtn.setText("confirmed");
         confirmBtn.setEnabled(false);
+        hs.save();
       } else {
         JOptionPane.showMessageDialog(
                 null, "Room Number is invalid");
@@ -167,6 +169,7 @@ public class GuestFindAvailableRoomScreen extends JFrame {
     });
 
     DoneBtn.addActionListener(e -> {
+        hs.save();
         new ChooseReceiptScreen(size, hs, user);
         dispose();
     });

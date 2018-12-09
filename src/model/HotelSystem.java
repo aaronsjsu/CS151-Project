@@ -1,32 +1,32 @@
 package model;
 
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.swing.event.*;
+import java.util.*;
 
 /**
  * Models the system itself for the hotel reservation system. This keeps track of 
  * all users, reservations, rooms, etc.
  */
-public class HotelSystem {
-	private HashMap<String, User> users;
-	private List<Reservation> reservations;
-	private List<Room> rooms;
-	private List<ChangeListener> listeners;
-	private LocalDate selectedDate;
-	private Room selectedRoom;
-	private String[] availableRooms;
+public class HotelSystem
+{
+	/* Maps user IDs to user accounts. */
+	private final Map<String, User> users;
+	/* Three dimensional map - For each room type, tracks each room's current reservations. */
+	private final Map<Room.Type, Map<Room, TreeSet<Reservation>>> roomReservations;
+	/* Listeners listening for changes to the hotel system. */
+	private final Set<ChangeListener> listeners = new HashSet<>();
+	
     /** Maximum number of rooms available in the hotel at any given time. */
     public static final int MAXIMUM_VACANCY = 20;
     /** Number of luxurious rooms available in the hotel. */
     public static final int LUXURIOUS_ROOMS = 10;
 	
-	public HotelSystem() {
+	public HotelSystem()
+	{
 		users = new HashMap<>();
+		
 		reservations = new ArrayList<>();
 		rooms = new ArrayList<>();
 		listeners = new ArrayList<>();

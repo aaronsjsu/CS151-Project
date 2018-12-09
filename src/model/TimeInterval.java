@@ -1,4 +1,4 @@
-package model.interval;
+package model;
 
 import java.time.LocalDateTime;
 import java.util.Objects;

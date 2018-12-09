@@ -4,8 +4,6 @@ package model;
  * Defines all possible access privilege groups.
  * Higher access privileges usually yield stronger
  * responsibilities and less restrictive control.
- * 
- * TODO: Flesh out this enumeration further if needed.
  *
  * @see User
  * @since 1.0

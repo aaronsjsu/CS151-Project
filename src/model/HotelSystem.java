@@ -32,6 +32,8 @@ public class HotelSystem implements Savable, Observable
 	public static final int HOTEL_TOTAL_VACANCIES = roomTypeVacancies.entrySet().stream()
 			.mapToInt(Map.Entry::getValue)
 			.sum();
+
+	private String[] availableRooms;
 	
 	/* All reservations are saved to the storage medium under this name. */
 	private static final String SAVE_FILE_NAME = "Reservations.ser";
@@ -54,6 +56,7 @@ public class HotelSystem implements Savable, Observable
 				res.put(r, new TreeMap<>());
 			}
 		}
+		availableRooms = new String[roomTypeVacancies.size()];
 	}
 
 	/**
@@ -79,7 +82,9 @@ public class HotelSystem implements Savable, Observable
 	}
 	
 	// TODO: Implement cancellation of reservations.
-
+	public String[] getAvailableRooms() {
+		return availableRooms;
+	}
 	/**
 	 * Retrieves all rooms of a specified type which are available in a specified time interval.
 	 * 
@@ -87,7 +92,7 @@ public class HotelSystem implements Savable, Observable
 	 * @param interval Time interval in which the room must be available.
 	 * @return Set of all available rooms.
 	 */
-	public Set<Room> getAvailableRooms(final Room.Type type, final TimeInterval interval)
+	public void setAvailableRooms(final Room.Type type, final TimeInterval interval)
 	{
 		final Map<Room, TreeMap<TimeInterval, Reservation>> roomRes = 
 				roomReservations.get(Objects.requireNonNull(type));
@@ -101,7 +106,13 @@ public class HotelSystem implements Savable, Observable
 				output.add(r);
 		}
 		
-		return output;
+		availableRooms = output.stream().map(o -> String.valueOf(o.getNumber())).toArray(String[]::new);
+
+		ChangeEvent changeEvent = new ChangeEvent(this);
+		for (ChangeListener listener : listeners) {
+			listener.stateChanged(changeEvent);
+		}
+
 	}
 
 	/**
@@ -184,7 +195,7 @@ public class HotelSystem implements Savable, Observable
 
 	/**
 	 * Saves this object to the storage medium.
-	 * Implementations should call Savable.save and
+	 * Implementations should call Savable.save andse
 	 * Savable.load for simplified saving and loading.
 	 *
 	 * @return true if the object was successfully saved.
@@ -203,4 +214,7 @@ public class HotelSystem implements Savable, Observable
 	{
 		return Savable.load(SAVE_FILE_NAME);
 	}
+
+
+
 }
